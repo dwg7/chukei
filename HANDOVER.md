@@ -2,6 +2,21 @@
 
 Read this first in any new session on this repo. Written in English per the language convention in `CLAUDE.md`. Rationale for each decision lives in `DECISIONS.md`.
 
+## What's true as of 2026-08-22
+
+- **[CHUKEI_PROMPT.md](../CHUKEI_PROMPT.md) is drafted and now build-script-generated** (D9, then D10). `scripts/build-chukei-prompt.mjs` (`npm run build`) forks `reference/build-gennai-prompt.mjs.snapshot-2026-08-21.mjs`'s fetch/format logic wholesale and regenerates the file from the live `hfu/layers-martin` + `stars.optgeo.org` catalogs — 1690 layers-martin + 8 stars-optgeo entries as of the last run. `CHUKEI_PROMPT.md`'s own header again says "auto-generated, don't hand-edit" (matches GENNAI_PROMPT.md's convention). **Not yet tested against real Gennai** — that's blocked until Gennai access is available again (~2026-08-24, per hfu).
+- Version tag is the `CHUKEI_VERSION` constant near the top of `scripts/build-chukei-prompt.mjs`, currently `ちゅうけい2026-08-22`. To ship a revision: edit the prompt content in `buildPrompt()` and/or bump `CHUKEI_VERSION`, then `npm run build`, then redeploy the regenerated `CHUKEI_PROMPT.md` to Gennai's saved system prompt (manual, out-of-band step — no CI/CD path into Gennai).
+- `LICENSE` (CC0 1.0 Universal) added, matching the other `dwg7` repos (D11).
+- **[FEEDBACK_FORM.md](../FEEDBACK_FORM.md) is drafted** (D13) — the Microsoft Forms question spec, not yet built in Forms itself. Both open questions from the section below are now decided: anonymous only (no name/section field), and the pilot-expectation-setting note goes on the lightning talk slide, not in the form. Three fields: paste Chukei's full response text (required), yes/no/partially match (required), free-text intent+impression (optional).
+- **[JUSTIFICATION.md](../JUSTIFICATION.md) exists** (D12) — the "is this really DWG7 work?" argument, written for Q&A use.
+- **[TALK_PREP.md](../TALK_PREP.md) is drafted** (D14) — talk outline (5 min), demo script (8 min, including a deliberate "break it" query), and Q&A prep condensed from `JUSTIFICATION.md`. Not yet turned into an actual slide deck.
+- **Ran a dry-run simulation of the demo queries against `CHUKEI_PROMPT.md`** (playing Gennai's role manually, since real Gennai access is still blocked) — confirmed all example `source_id`/`style_id`s referenced by `TALK_PREP.md` actually exist in the generated catalog, caught that demo query 1 had no place name (fixed: now "札幌市の土砂災害警戒区域を教えて"), and surfaced a real design problem with demo query 3 — see next bullet.
+- **Resolved (D16→D17): the style_id YAML-dump problem.** spiccato added `rstyle=`/`ostyle=` URL params (same day, additive, 110+13 tests passing, verified live) — see `DECISIONS.md` D17 for the full report. `scripts/build-chukei-prompt.mjs` updated to use them: the special "YAML-only" success format is gone entirely, every successful response (layer or style) is now one link. `CHUKEI_PROMPT.md` regenerated. `TALK_PREP.md`'s demo query 3 is un-held.
+- spiccato's fix was committed locally (`43f26a0`, `0a355d7` on `main`), pushed to production during this session per hfu's go-ahead, and **verified live on the real `https://dwg7.github.io/spiccato/`** by this session's own Browser tool (D18) — not just taken on the spiccato session's word. Demo query 3 is confirmed working end-to-end: correct panel labels, required/optional checkbox state, no console errors. No remaining blocker on this.
+- **[QUERY_EXAMPLES.md](../QUERY_EXAMPLES.md) is drafted and dry-run tested** (D19) — a dozen Hokkaido-grounded realistic queries (2018 Iburi earthquake/Atsuma, named Hokkaido volcanoes, 石狩川 flood risk, Sapporo DID, Kuril-trench tsunami risk for 十勝・釧路, two deliberate coverage-gap cases, one deliberate not-found case), for realism beyond `TALK_PREP.md`'s three demo queries.
+- **Resolved (D20): 火山土地条件図/火山基本図 queries now always prefer stars-optgeo's `vlcm`/`vbm` style** over layers-martin's per-volcano `vlcd_*` data, even when a specific volcano is named — as long as it's within stars' 道南〜道央 coverage. `scripts/build-chukei-prompt.mjs` and `CHUKEI_PROMPT.md` updated; `QUERY_EXAMPLES.md` cases 2/4 updated accordingly.
+- Task list below is updated to reflect this — items 1-2, 4-5, 7-8 are done; item 6 (the talk itself) has a draft outline but still needs slides (if any) and a live rehearsal; item 3 is still open.
+
 ## What's true as of 2026-08-21
 
 - Repo `dwg7/chukei` created and cloned to `/Users/hfu/Downloads/chukei` (see D1 for the GitHub-account note — always operate as `hfu`, never `handygeospatial`).
@@ -37,9 +52,15 @@ hfu wants a Microsoft Forms channel where staff report their question, Chukei's 
 1. **Ask staff to paste the Chukei-generated link itself, not retype their question.** The link already losslessly encodes the resolved Map Intent (catalog, layers, bbox) — pasting it is one click, versus retyping a question is real friction for busy staff. Free-text "what did you actually want, and did this match?" stays as a secondary field for cases where the link alone doesn't explain the mismatch.
 2. **Add one structured field** (e.g. a single "Did this match what you expected? — yes / no / partially" multiple-choice question) alongside the free-text impression field, so revisions can be tracked quantitatively over time rather than only qualitatively.
 
-Also worth deciding before the form goes out (open questions for hfu, not yet decided):
-- Anonymous vs. attributed feedback — attribution helps follow-up clarification, anonymity may get more candid criticism.
-- A one-line expectation-setting note somewhere in the launch (lightning talk slide, or Chukei's own first-run response) that this is a pilot and odd results should be reported, not silently worked around.
+Both open questions below are now decided (D13, 2026-08-22) — kept here for the historical rationale, see `FEEDBACK_FORM.md` for the resulting spec:
+- ~~Anonymous vs. attributed feedback~~ → **anonymous only**, no name/section field.
+- ~~A one-line expectation-setting note~~ → **lightning talk slide**, not the form itself.
+
+## Lightning talk direction
+
+hfu's explicit guidance (2026-08-22): 5 minutes of talk, 8 minutes of live demo. Core message is "崩して良い、遊んで良い" (it's okay to break it, okay to play with it) — skip philosophical/architectural framing (no Staccato-spec walkthrough, no DWG7-justification content from `JUSTIFICATION.md`) entirely. Structure is "こんなもの作ってみた、こういうふうに使えます。フィードバックください" (I built this, here's how to use it, give feedback) — a show-and-tell + live demo, not a design pitch. The talk doubles as the pilot's launch, so this is also where the pilot-expectation-setting framing lives (per D13 — not in the feedback form itself).
+
+**Decided (D15)**: the talk's working title (「地図をコパイロットや源内で出したい」, see the 2026-08-21 note above) names both Microsoft Copilot and 源内(Gennai) as targets, but only Gennai gets the "friendly," pilot-ready build-out (terse response format, feedback loop, this talk). Copilot users are pointed at `hfu/layers-martin`'s existing `STAFF_PROMPT.md` instead — no new Copilot-specific fork gets built for this project or this talk. **Framing matters here**: this is *not* "no Copilot version" — it's "the Copilot option has a more technical flavor (`STAFF_PROMPT.md`) than the pilot-friendly one built for 源内." Also worth being precise about if it comes up: `CHUKEI_PROMPT.md` itself isn't actually Gennai-exclusive — it's static instructions text that would likely work pasted into Copilot as-is (Gennai's no-internet constraint shaped the embed-everything catalog design, but that constraint isn't something Copilot happens to share or require) — that path is just untested and unpromised for this pilot, not technically blocked. See `TALK_PREP.md`'s Q&A section for the talk-ready phrasing of all this.
 
 ## Catalog freshness
 
@@ -47,12 +68,16 @@ Also worth deciding before the form goes out (open questions for hfu, not yet de
 
 ## What's actually left to do
 
-1. Draft `CHUKEI_PROMPT.md` (or a build script + generated output, mirroring spiccato) — fork of `GENNAI_PROMPT.md` with the response-format section replaced per above. **Not started yet.**
-2. Write `scripts/build-chukei-prompt.mjs` (fork of `build-gennai-prompt.mjs`) so the catalog embed isn't a one-time manual copy.
-3. Test the drafted prompt against real Gennai before the lightning talk.
-4. Draft the Microsoft Forms question set (see feedback-loop section above for the two must-have design choices).
-5. Decide the open feedback-loop questions (anonymity, expectation-setting copy).
-6. Prepare the lightning talk itself — likely its own short deck; out of scope for this repo unless hfu wants it tracked here too.
+1. ~~Draft `CHUKEI_PROMPT.md`~~ **Done (D9).**
+2. ~~Write `scripts/build-chukei-prompt.mjs`~~ **Done (D10).** Catalog embed is now regenerated with `npm run build`, not hand-copied.
+3. **Test the drafted prompt against real Gennai before the lightning talk.** Blocked until Gennai access returns (~2026-08-24). Next session should start here.
+4. ~~Draft the Microsoft Forms question set~~ **Done (D13).** `FEEDBACK_FORM.md` has the spec; still needs to actually be built in Microsoft Forms (not yet done — this repo only holds the spec, not a live form).
+5. ~~Decide the open feedback-loop questions~~ **Done (D13).**
+6. Prepare the lightning talk itself. ~~Outline/demo-script/Q&A prep~~ **drafted (D14, `TALK_PREP.md`)**. Still open: actual slides (if any — may not even be needed given the demo-heavy format), a live rehearsal of the demo script against real Gennai (blocked by item 3), and pointing the "feedback form" step at the real Microsoft Forms link once item 4's live form exists.
+7. ~~Decide whether a Copilot-targeted variant of Chukei belongs in this project~~ **Done (D15).** No Copilot-specific fork; point Copilot users at `STAFF_PROMPT.md` instead. See "Lightning talk direction" above for the framing nuance — get this one right if it comes up in Q&A.
+8. ~~Resolve the style_id YAML-dump problem~~ **Done and verified live (D16→D17→D18).** spiccato added `rstyle`/`ostyle`, pushed to production, confirmed working end-to-end against the real GitHub Pages site by this session directly. `TALK_PREP.md` demo query 3 fully restored, no caveats left.
+9. ~~Write a dozen realistic, Hokkaido-grounded query examples~~ **Done and dry-run tested (D19).** `QUERY_EXAMPLES.md`.
+10. ~~Decide the 有珠山 cross-catalog ambiguity~~ **Done (D20).** stars-optgeo's `vlcm`/`vbm` style always wins over layers-martin's `vlcd_*` for volcano land-condition/basic-map requests, within stars' 道南〜道央 coverage.
 
 ## Things to carry over from the `staccato` project (won't be in this repo's own memory otherwise)
 

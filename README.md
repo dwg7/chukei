@@ -8,14 +8,20 @@ Part of the [Staccato](https://github.com/UNopenGIS/staccato-spec) architecture 
 
 ## Status
 
-Early setup. See `HANDOVER.md` for current status and next steps, `DECISIONS.md` for design rationale.
+Early setup. See `HANDOVER.md` for current status and next steps, `DECISIONS.md` for design rationale, `JUSTIFICATION.md` for why this project lives under `dwg7`.
 
 ## Language
 
 Documentation and code in this repository are in English. The prompt itself, and everything it says to its users, is in Japanese — its users are Japanese-speaking GSI staff.
+
+## License
+
+[CC0 1.0 Universal](LICENSE), matching `dwg7/spiccato` and the other DWG7 repos.
 
 ## Related
 
 - [`dwg7/spiccato`](https://github.com/dwg7/spiccato) — the Cartographer this deploys against, and the direct ancestor of Chukei's prompt (`GENNAI_PROMPT.md`)
 - [`hfu/layers-martin`](https://github.com/hfu/layers-martin) — the Library / catalog
 - [`UNopenGIS/staccato-spec`](https://github.com/UNopenGIS/staccato-spec) — the architecture spec (informal draft)
+
+**Want to try this on Microsoft Copilot instead of 源内?** Chukei itself is Gennai-only for now (`DECISIONS.md` D15) — use [`hfu/layers-martin`'s `STAFF_PROMPT.md`](https://github.com/hfu/layers-martin/blob/main/STAFF_PROMPT.md) instead, the fetch-based sibling prompt this project forked its Gennai variant from.
