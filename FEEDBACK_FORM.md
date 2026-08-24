@@ -12,7 +12,7 @@ Question set for the Microsoft Forms channel referenced in `HANDOVER.md`, so pil
 
 **1. Chukeiの回答を、そのまま貼り付けてください**
 Type: Text, long answer. Required.
-Placeholder/help text: 「地図を用意しました。[地図](...)。[フィードバックする](...)。ちゅうけい<version>」のような回答全体をコピーして貼り付けてください。リンクが無い「見つかりませんでした」という回答だった場合も、その文章をそのまま貼り付けてください。
+Placeholder/help text: 「[地図](...)を用意しました。(または「近い[地図](...)を用意しました。」) [フィードバックする](...)。ちゅうけい<version>」のような回答全体をコピーして貼り付けてください。リンクが無い「見つかりませんでした」という回答だった場合も、その文章をそのまま貼り付けてください。
 
 Why the whole response and not just the link: for a successful query the link alone losslessly encodes the resolved Map Intent (`DECISIONS.md` D4's original rationale), but Chukei's terser format (D6/D9) also has a link-less "not found" response — pasting the full response text is the one field that works for both cases and still carries the version tag, so even a failed query stays traceable to the exact prompt revision that produced it.
 
