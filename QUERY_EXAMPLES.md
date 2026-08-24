@@ -21,51 +21,59 @@ Every `source_id`/`style_id` referenced below was grep-verified against the actu
 
 ## Dry-run results
 
-Response format and version tag (`ちゅうけい2026-08-22`) per `CHUKEI_PROMPT.md`'s "応答フォーマット" section, applied by hand exactly as the prompt specifies.
+Response format and version tag (`ちゅうけい2026-08-24`) per `CHUKEI_PROMPT.md`'s "応答フォーマット" section, applied by hand exactly as the prompt specifies. **Updated 2026-08-24 (GitHub issue #1, `DECISIONS.md` D21)**: every response is now 3 paragraphs (map/not-found line, `[フィードバックする](https://forms.cloud.microsoft/r/X8VyNySW5s)`, version tag) rather than 1 line — see D21. To keep this file readable, the full 3-paragraph block is shown once (case 1); every other case shows only the first (varying) paragraph, since the feedback-link and version-tag paragraphs are always identical.
 
 **1. 厚真町の斜面崩壊**(`req=20180906hokkaido_iburi_hokaichi`, `opt=20180906hokkaido_atsuma_digital`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=20180906hokkaido_iburi_hokaichi|斜面崩壊・堆積分布図&opt=20180906hokkaido_atsuma_digital|厚真町周辺&bbox=141.75,42.6,142.0,42.8&name=厚真町)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=20180906hokkaido_iburi_hokaichi|斜面崩壊・堆積分布図&opt=20180906hokkaido_atsuma_digital|厚真町周辺&bbox=141.75,42.6,142.0,42.8&name=厚真町)。
+>
+> [フィードバックする](https://forms.cloud.microsoft/r/X8VyNySW5s)。
+>
+> ちゅうけい2026-08-24
 
 **2. 有珠山の火山土地条件図**(`rstyle=vlcm`, `ostyle=vbm` — stars-optgeoのスタイルを優先。下記「解決済み」参照)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://stars.optgeo.org/catalog&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=140.65,42.42,141.0,42.65&name=有珠山)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://stars.optgeo.org/catalog&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=140.65,42.42,141.0,42.65&name=有珠山)。(以下、フィードバックリンクとバージョンタグは省略 — ケース1と同一)
 
 **3. 十勝岳**(`req=vlcd_tokachi` — 道南〜道央の範囲外なのでlayers-martinのままでよい)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=vlcd_tokachi|十勝岳&bbox=142.5,43.3,142.9,43.55&name=十勝岳)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=vlcd_tokachi|十勝岳&bbox=142.5,43.3,142.9,43.55&name=十勝岳)。(以下省略)
 
 **4. 北海道駒ヶ岳**(`rstyle=vlcm`, `ostyle=vbm` — 渡島半島(道南)なのでstars-optgeoのスタイルを優先。下記「解決済み」参照)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://stars.optgeo.org/catalog&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=140.5,41.95,140.85,42.15&name=北海道駒ヶ岳)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://stars.optgeo.org/catalog&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=140.5,41.95,140.85,42.15&name=北海道駒ヶ岳)。(以下省略)
 
 **5. 樽前山赤色立体地図**(`req=tarumaered`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=tarumaered|赤色立体地図（樽前山周辺）&bbox=141.2,42.55,141.55,42.8&name=樽前山)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=tarumaered|赤色立体地図（樽前山周辺）&bbox=141.2,42.55,141.55,42.8&name=樽前山)。(以下省略)
 
 **6. 石狩川流域の洪水浸水想定**(`req=01_flood_l2_shinsuishin_data`, `opt=01_flood_l1_shinsuishin_newlegend_data`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=01_flood_l2_shinsuishin_data|洪水浸水想定区域（想定最大規模）&opt=01_flood_l1_shinsuishin_newlegend_data|洪水浸水想定区域（計画規模（現在の凡例））&bbox=141.25,43.0,141.85,43.4&name=石狩川下流域)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=01_flood_l2_shinsuishin_data|洪水浸水想定区域（想定最大規模）&opt=01_flood_l1_shinsuishin_newlegend_data|洪水浸水想定区域（計画規模（現在の凡例））&bbox=141.25,43.0,141.85,43.4&name=石狩川下流域)。(以下省略)
 
 **7. 札幌市のDID**(`req=did2020`, `opt=did2015`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=did2020|人口集中地区 令和2年（総務省統計局）&opt=did2015|人口集中地区 平成27年（総務省統計局）&bbox=141.15,42.95,141.55,43.25&name=札幌市)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=did2020|人口集中地区 令和2年（総務省統計局）&opt=did2015|人口集中地区 平成27年（総務省統計局）&bbox=141.15,42.95,141.55,43.25&name=札幌市)。(以下省略)
 
 **8. 十勝・釧路沿岸の津波浸水想定**(`req=04_tsunami_newlegend_data`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=04_tsunami_newlegend_data|津波浸水想定（想定最大規模）&bbox=143.0,42.0,145.5,43.2&name=十勝・釧路沿岸)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=04_tsunami_newlegend_data|津波浸水想定（想定最大規模）&bbox=143.0,42.0,145.5,43.2&name=十勝・釧路沿岸)。(以下省略)
 
 **9. 北海道の活断層 — 既知の制約が実際に出たケース**(`req=afm`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=afm|活断層図（都市圏活断層図）&bbox=139.0,41.3,148.9,45.7&name=北海道全域)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=afm|活断層図（都市圏活断層図）&bbox=139.0,41.3,148.9,45.7&name=北海道全域)。(以下省略)
 >
-> **注記**: `afm`(都市圏活断層図)は主要都市圏を対象とした図で、北海道全域を均等にカバーしているとは限らない。応答フォーマット上、Chukeiはこのカバレッジの限界を利用者に説明しない(1行の定型に収める設計のため)。実際に地図を開くと広い範囲が空白になる可能性がある — これはプロンプトの不具合ではなく、`CHUKEI_PROMPT.md`「既知の制約」節がもとから明記している性質。パイロットのフィードバックで「地図が空だった」という報告が来たら、まずこの制約に該当しないか確認するとよい。
+> **注記**: `afm`(都市圏活断層図)は主要都市圏を対象とした図で、北海道全域を均等にカバーしているとは限らない。応答フォーマット上、Chukeiはこのカバレッジの限界を利用者に説明しない(定型に収める設計のため)。実際に地図を開くと広い範囲が空白になる可能性がある — これはプロンプトの不具合ではなく、`CHUKEI_PROMPT.md`「既知の制約」節がもとから明記している性質。パイロットのフィードバックで「地図が空だった」という報告が来たら、まずこの制約に該当しないか確認するとよい。フィードバックリンクが全応答に付くようになった(D21)ことで、こうした報告自体が拾いやすくなったのは good news。
 
 **10. 厚真町の被災前後比較 — ベストエフォート代替のケース**(`req=20180906hokkaido_atsuma_0906do,20180906hokkaido_atsuma_0911do`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=20180906hokkaido_atsuma_0906do|厚真川地区（9/6撮影）,20180906hokkaido_atsuma_0911do|厚真川地区（9/11撮影）&bbox=141.75,42.6,142.0,42.8&name=厚真町)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=20180906hokkaido_atsuma_0906do|厚真川地区（9/6撮影）,20180906hokkaido_atsuma_0911do|厚真川地区（9/11撮影）&bbox=141.75,42.6,142.0,42.8&name=厚真町)。(以下省略)
 >
 > **注記**: このカタログには厚真町の被災「前」の基準画像が見当たらず、9/6・9/11撮影(いずれも震災後)の2時期を返すのが精一杯のベストエフォート。利用者が本当に欲しかった「前後比較」を完全には満たせていない可能性があるが、`CHUKEI_PROMPT.md`のルール通り、この制約を応答文には書かない(内部処理の説明をしない、という設計方針通り)。フィードバックフォームの自由記入欄で拾えるとよいケース。
 
 **11. 江別市周辺の土地条件図 — カバレッジ制約のケース**(`req=lcm25k_2012`)
-> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=lcm25k_2012|数値地図25000（土地条件）&bbox=141.4,43.05,141.65,43.2&name=江別市)。ちゅうけい2026-08-22
+> 地図を用意しました。[地図](https://dwg7.github.io/spiccato/#q=catalog=https://hfu.github.io/layers-martin/catalog.json&req=lcm25k_2012|数値地図25000（土地条件）&bbox=141.4,43.05,141.65,43.2&name=江別市)。(以下省略)
 >
 > **注記**: `lcm25k_2012`は「整備済み平野の一部」限定というのが既知の制約(`CHUKEI_PROMPT.md`に明記済み)。江別市が整備範囲に入っているか未確認 — ケース9と同種のリスク。
 
 **12. 北海道の地籍調査の進捗状況 — 意図した「見つからない」ケース**
-> 該当する地図データが見つかりませんでした。もう少し具体的に教えていただけますか。ちゅうけい2026-08-22
+> 該当する地図データが見つかりませんでした。もう少し具体的に教えていただけますか。
 >
-> 地籍調査の進捗率は行政統計であって地図レイヤーではないため、このカタログはそもそも扱っていない。terseな not-found 応答がそのまま機能する、想定通りの結果。
+> [フィードバックする](https://forms.cloud.microsoft/r/X8VyNySW5s)。
+>
+> ちゅうけい2026-08-24
+>
+> 地籍調査の進捗率は行政統計であって地図レイヤーではないため、このカタログはそもそも扱っていない。terseな not-found 応答がそのまま機能する、想定通りの結果。not-foundでもフィードバックリンクは省略されない(D21) — 「見つからなかった」という報告こそ拾う価値がある。
 
 ## Findings worth carrying forward
 
