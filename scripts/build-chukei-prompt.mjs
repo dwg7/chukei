@@ -49,8 +49,23 @@ const NOISE_ID_PREFIXES = ['disasterhist_'];
 const NOISE_ID_PATTERN = /^\d{4}_\d{2}[-_]/; // e.g. 1896_09_m29, 1953_08-09_s28_t
 const NOISE_IDS = new Set(['hyougokennnanbu_liq', 'nihonkaichubu_liq', 'niigata_liq', 'sanrikuharukaoki_liq']);
 
+// Chukei-specific exclusions (DECISIONS.md D25) -- unlike the GENNAI-inherited
+// set above, these ARE volume-driven: gsjgeomap_*/d1-no* together are 1041 of
+// 1690 layers-martin entries (61.6%), individual tile-sheet leaves GSI's own
+// upstream layers.txt enumerates in bulk (confirmed via layers-martin's
+// build_catalog.rb), not something Chukei's non-technical Hokkaido audience
+// plausibly asks for by name. Spot-checked d1-no*'s 3 Hokkaido entries
+// (Sapporo x2, Hokkaido-wide) before excluding -- none tied to a specific
+// event; the "current aerial photo" case is already covered by `airphoto`.
+// Deliberately NOT excluded: the date-prefixed one-off disaster-response
+// orthophotos (e.g. 20180906hokkaido_*) -- numerically large too, but
+// genuinely useful and event-specific (QUERY_EXAMPLES.md case 1 depends on
+// one). `fgd_update_*` also deliberately kept -- hfu's call, may be used.
+const CHUKEI_NOISE_ID_PREFIXES = ['gsjgeomap_', 'd1-no'];
+
 function isNoise(id) {
   if (NOISE_ID_PREFIXES.some((prefix) => id.startsWith(prefix))) return true;
+  if (CHUKEI_NOISE_ID_PREFIXES.some((prefix) => id.startsWith(prefix))) return true;
   if (NOISE_ID_PATTERN.test(id)) return true;
   if (NOISE_IDS.has(id)) return true;
   return false;

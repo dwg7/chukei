@@ -2,6 +2,17 @@
 
 Read this first in any new session on this repo. Written in English per the language convention in `CLAUDE.md`. Rationale for each decision lives in `DECISIONS.md`.
 
+## What's true as of 2026-08-28
+
+- **A 2-week improvement plan was approved**: `/Users/hfu/.claude/plans/cuddly-hugging-origami.md` (written in Japanese per hfu's request, includes an explicit priority-criteria list and an explicit "who executes what" responsibility split — read it before picking up any of the areas below).
+- **Resolved (D25, plan Area 3): `gsjgeomap_*`/`d1-no*` excluded from Chukei's embedded catalog.** 1690 → 649 layers-martin entries. `fgd_update_*` deliberately kept per hfu's explicit override (may still be used) — don't re-propose excluding it without asking again.
+- **Plan Area 1 (global/OSM basemap) is mid-flight, spanning three concurrent cross-session handoffs** — this session wrote all three handoff prompts (per the plan's established responsibility split: this session judges delegation + writes the prompt, hfu relays, the other session executes):
+  - **spiccato**: add `basemap?: StyleRef` to Map Intent (reusing the existing `StyleRef` type), `buildStyle()` branches to fetch a non-default basemap via the existing style-fetch mechanism, `#q=` gets a new `basemap=<style_id>[|label]` param. Design explicitly rejected geometric/bbox-based Japan detection in favor of Staff deciding from query semantics. In progress as of this note.
+  - **staccato-spec**: ADR proposing `basemap?: StyleRef` as an official Map Intent field. In progress.
+  - **`~/stars`** (the config repo behind `stars.optgeo.org`, newly given its own dedicated Claude Code session): this session directly SSH'd into the live host (`spacex.optgeo.org`) *before* that dedicated session existed, and added a `openstreetmap_jp_planet` PMTiles source (referencing `https://tile.openstreetmap.jp/static/planet.pmtiles` by URL, global OSM/OpenMapTiles coverage) plus a matching style JSON — both verified working via direct tile/style HTTP requests. Handed off to the new `~/stars` session to (a) investigate why this source doesn't appear in `/catalog`'s listing despite working directly (blocks Chukei's own build script from ever documenting it), and (b) become the sole future editor of the live config — this session won't SSH in and edit it again.
+  - **Don't assume any of these three are done** — check with hfu or re-verify live before building on top of `basemap`/`openstreetmap_jp_planet` elsewhere in this repo.
+- Still true: real Gennai testing status hasn't been reconfirmed in this session — see below.
+
 ## What's true as of 2026-08-24
 
 - **The Microsoft Forms feedback form is live**: https://forms.cloud.microsoft/r/X8VyNySW5s (hfu built it directly; `FEEDBACK_FORM.md`'s field design was the spec and is confirmed still accurate, just not literally used as a build script).
