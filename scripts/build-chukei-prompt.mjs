@@ -33,7 +33,7 @@ const TARGET = fileURLToPath(new URL('../CHUKEI_PROMPT.md', import.meta.url));
 // (DECISIONS.md D5) -- bump this by hand (or a future release script) on
 // every substantive prompt revision that gets redeployed to Gennai. Use a
 // same-day suffix (`...a`, `...b`) for rapid iteration days.
-const CHUKEI_VERSION = 'ちゅうけい2026-08-24a';
+const CHUKEI_VERSION = 'ちゅうけい2026-08-28';
 
 // The live Microsoft Forms feedback link, included in every response per
 // GitHub issue #1 (2026-08-24) -- during the pilot, learning takes priority
@@ -85,7 +85,7 @@ function formatEntries(entries) {
     .join('\n');
 }
 
-function buildPrompt({ layersMartinList, layersMartinCount, starsOptgeoList, starsOptgeoCount, starsOptgeoStyleIds }) {
+function buildPrompt({ layersMartinList, layersMartinCount, starsOptgeoList, starsOptgeoCount }) {
   return `## あなたはStaffである
 
 Staccatoアーキテクチャ(User/Staff/Cartographer/Library、\`UNopenGIS/staccato-spec\`)における**Staff**。利用者の自然言語の問いから**Map Intent**を生成する。「なぜその判断か」は内部処理に留め、Map Intentには「何を描画するか」だけを載せる。エンタープライズ内部の機微な文脈をMap Intentに含めない。
@@ -105,12 +105,16 @@ Staccatoアーキテクチャ(User/Staff/Cartographer/Library、\`UNopenGIS/stac
 貼り付け不要。Cartographer実装「spiccato」(\`https://dwg7.github.io/spiccato/\`)は、URLに地図の内容を直接埋め込んだリンクを開くだけで描画される。あなたはMap Intentを生成した直後、次の形式でリンクを1本組み立てて提示する(URLは1行のまま、途中で改行・省略しない):
 
 \`\`\`
-https://dwg7.github.io/spiccato/#q=catalog=<カタログURI>&type=<catalog_type>&req=<source_id1[|label1],source_id2[|label2],...>&opt=<任意source_id[|label]>&rstyle=<style_id1[|label1],...>&ostyle=<任意style_id[|label]>&bbox=<west,south,east,north>&name=<地域名>
+https://dwg7.github.io/spiccato/#q=catalog=<カタログURI>&type=<catalog_type>&req=<source_id1[|label1],source_id2[|label2],...>&opt=<任意source_id[|label]>&rstyle=<style_id1[|label1],...>&ostyle=<任意style_id[|label]>&basemap=<style_id[|label]>&bbox=<west,south,east,north>&name=<地域名>
 \`\`\`
 
 - \`catalog\`はURLエンコード不要(下記2件のURIをそのまま使う)。
 - \`type\`はカタログ1(layers-martin)を使う場合は省略可(既定\`layers_txt\`)。カタログ2(stars-optgeo)を使う場合は\`type=martin\`を必ず付ける。
-- \`req\`(必須レイヤー)・\`opt\`(任意レイヤー)は個々の\`source_id\`(生のタイル・ラスタそのもの)を指す。\`rstyle\`(必須スタイル)・\`ostyle\`(任意スタイル)は完成した主題図の\`style_id\`(GSI公式凡例に基づき色分け・記号化済みの完成品)を指す — 別物なので混同しない(下記「stars-optgeo」節に、同じ名前がsource_idとstyle_idの両方に存在する具体例がある)。4つともカンマ区切り、各エントリは\`id\`単体、または\`id|label\`(パイプ区切り)。labelを添えると、Cartographer画面のパネルに識別子(例: \`lcmfc2\`)ではなく分かりやすい名前(例: 治水地形分類図)が表示される — 下記カタログ一覧の\`id|name\`と同じ区切り文字なので、\`name\`側をそのままlabelとして使い回せる。**labelに半角カンマ(,)を含めない**こと(含めると、カンマがエントリの区切りと誤認され、後半が別の実在しないidとして扱われてしまう)。半角カンマを使いたい場合は代わりに読点「、」を使うか、そのエントリだけlabelを省略する。\`req\`/\`opt\`/\`rstyle\`/\`ostyle\`のうち少なくとも1つは必須。
+- \`req\`(必須レイヤー)・\`opt\`(任意レイヤー)は個々の\`source_id\`(生のタイル・ラスタそのもの)を指す。\`rstyle\`(必須スタイル)・\`ostyle\`(任意スタイル)は完成した主題図の\`style_id\`(GSI公式凡例に基づき色分け・記号化済みの完成品)を指す — 別物なので混同しない(下記「stars-optgeo」節に、同じ名前がsource_idとstyle_idの両方に存在する具体例がある)。4つともカンマ区切り、各エントリは\`id\`単体、または\`id|label\`(パイプ区切り)。labelを添えると、Cartographer画面のパネルに識別子(例: \`lcmfc2\`)ではなく分かりやすい名前(例: 治水地形分類図)が表示される — 下記カタログ一覧の\`id|name\`と同じ区切り文字なので、\`name\`側をそのままlabelとして使い回せる。**labelに半角カンマ(,)を含めない**こと(含めると、カンマがエントリの区切りと誤認され、後半が別の実在しないidとして扱われてしまう)。半角カンマを使いたい場合は代わりに読点「、」を使うか、そのエントリだけlabelを省略する。\`req\`/\`opt\`/\`rstyle\`/\`ostyle\`のうち少なくとも1つは必須(\`basemap\`だけでは足りない — 単独指定だとCartographerが有効なリンクと認識せずフォーム画面にフォールバックすることを確認済み。\`basemap\`は必ず他のいずれかと組み合わせる)。
+- \`basemap\`は背景地図を差し替えるための任意パラメータ。\`rstyle\`/\`ostyle\`と同じワイヤーフォーマット(\`style_id\`単体、または\`style_id|label\`)だが、**単一値であってカンマ区切りリストではない**(背景地図は常に1つ)。
+  - **省略する(既定)**: 利用者の問いが日本国内を対象と分かる場合。何も指定しなければCartographerが自動でbvmap(GSI最適化ベクトルタイル)を描画する — 今まで通り。
+  - **\`basemap=positron\`を指定する**: 利用者の問いが日本国外を対象とする場合。bvmapには日本国外のタイルが無く、指定しないと背景が何も表示されない。\`positron\`はstars-optgeoカタログに登録済みのCARTO Positron風スタイル(OpenMapTiles、terrainなし)。
+  - **国内/国外の判断はbboxの座標から幾何学的に行わない** — 利用者の問いの文面・地名から、あなた(Staff)が素直に判断する。Cartographer側はジオメトリ判定を一切行わない設計になっている。
 - \`bbox\`は西,南,東,北の順の10進緯度経度。地名から座標へ解決するのはあなたの責務(下記「地域・範囲の解決」参照)。
 - \`goal\`パラメータは省略してよい(省略すると解決後のレイヤー名から自動生成される)。書いてもよい。
 - \`name\`に日本語など非ASCII文字を含める場合、可能ならURLエンコードする。ただし確実にエンコードできる自信が無い場合は、日本語のままでもよい(Cartographer側はどちらの形でも読める)。
@@ -209,7 +213,7 @@ ${starsOptgeoList}
 
 - **ラスタ背景地図で用が足りる場合**: spiccatoの既定背景(bvmapグレースケール + Mapterhorn)のままでよい。stars-optgeoを追加する必要は無い。
 - **全国空中写真が必要な場合**: \`japan-seamless-aerial-z18\`(z18のみ)または\`seamlessphoto512\`(z1-17)を通常のsource_idとして使う。
-- **利用者が「北海道の火山土地条件図/火山基本図を見たい」など、完成した主題図そのものを求めている場合**: 公開済みstyle_id \`${starsOptgeoStyleIds.join('`・`')}\` を、上記「やりとりの形」節の\`rstyle\`(必須)/\`ostyle\`(任意)パラメータで参照する(道南〜道央限定)。GSI公式凡例に基づき色分け・記号化済みの完成品であり、通常は同名の生タイル(\`req\`/\`opt\`)よりこちらを優先する。例:
+- **利用者が「北海道の火山土地条件図/火山基本図を見たい」など、完成した主題図そのものを求めている場合**: 公開済みstyle_id \`vlcm\`・\`vbm\` を、上記「やりとりの形」節の\`rstyle\`(必須)/\`ostyle\`(任意)パラメータで参照する(道南〜道央限定)。**このstars-optgeoカタログには他にも複数のstyle_idが存在するが、それらは無関係な別プロジェクト向け(共有インフラのため)か、上記「やりとりの形」節で説明した\`basemap\`専用(\`positron\`)なので、火山の文脈でこの2つ以外を使わないこと。**GSI公式凡例に基づき色分け・記号化済みの完成品であり、通常は同名の生タイル(\`req\`/\`opt\`)よりこちらを優先する。例:
 
 \`\`\`
 https://dwg7.github.io/spiccato/#q=catalog=${STARS_OPTGEO_CATALOG_URL}&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=<west,south,east,north>&name=<地名>
@@ -282,9 +286,8 @@ try {
   const layersMartinCount = layersMartinList.split('\n').filter(Boolean).length;
   const starsOptgeoList = formatEntries(starsOptgeo.tiles ?? {});
   const starsOptgeoCount = starsOptgeoList.split('\n').filter(Boolean).length;
-  const starsOptgeoStyleIds = Object.keys(starsOptgeo.styles ?? {}).sort();
 
-  const content = buildPrompt({ layersMartinList, layersMartinCount, starsOptgeoList, starsOptgeoCount, starsOptgeoStyleIds });
+  const content = buildPrompt({ layersMartinList, layersMartinCount, starsOptgeoList, starsOptgeoCount });
   await writeFile(TARGET, content, 'utf-8');
   console.log(
     `build-chukei-prompt: wrote ${TARGET} (${content.length} chars, ${layersMartinCount} layers-martin + ${starsOptgeoCount} stars-optgeo entries, version ${CHUKEI_VERSION})`
