@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-chukei-prompt.mjs"
+    "build": "node scripts/build-chukei-prompt.mjs",
+    "build:collaboration": "node scripts/build-chukei-collaboration-prompt.mjs"
   }
 }

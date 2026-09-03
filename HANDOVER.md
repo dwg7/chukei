@@ -2,6 +2,12 @@
 
 Read this first in any new session on this repo. Written in English per the language convention in `CLAUDE.md`. Rationale for each decision lives in `DECISIONS.md`.
 
+## What's true as of 2026-09-03
+
+- **New file: `CHUKEI_COLLABORATION_PROMPT.md` (D31, GitHub issue #3).** Adds a request-routing + partnership-outreach-planning layer (school lessons, disaster-prep workshops, industry study sessions, museum exhibits, etc.) in front of Chukei's existing map-link generation. Built by `scripts/build-chukei-collaboration-prompt.mjs` (`npm run build:collaboration`) — **run `npm run build` first**, since this script embeds whatever `CHUKEI_PROMPT.md` currently contains on disk, verbatim, rather than re-deriving it. Single self-contained file, same "copy from GitHub, paste into a fresh session" deployment model as `CHUKEI_PROMPT.md` (D23).
+- **The collaboration-mode content is Chukei's instantiation of `dwg7/staccato-ecosystem`'s `methodology/*.ja.md`** (deployment-agnostic collaboration-planning methodology, cloned locally at `~/staccato-ecosystem`) — not independently derived from issue #3's text. If the methodology repo's docs change, re-check whether `CHUKEI_COLLABORATION_PROMPT.md`'s front matter has drifted from them.
+- This is a new, unreleased file — hasn't been tested against real Gennai/Copilot/Claude sessions yet, and its own acceptance tests (issue #3 §13) were only reviewed statically (design read-through), not exercised live. Next session picking this up should do that before considering it done.
+
 ## What's true as of 2026-08-28
 
 - **A 2-week improvement plan was approved**: `/Users/hfu/.claude/plans/cuddly-hugging-origami.md` (written in Japanese per hfu's request, includes an explicit priority-criteria list and an explicit "who executes what" responsibility split — read it before picking up any of the areas below).
