@@ -33,7 +33,7 @@ const TARGET = fileURLToPath(new URL('../CHUKEI_PROMPT.md', import.meta.url));
 // (DECISIONS.md D5) -- bump this by hand (or a future release script) on
 // every substantive prompt revision that gets redeployed to Gennai. Use a
 // same-day suffix (`...a`, `...b`) for rapid iteration days.
-const CHUKEI_VERSION = 'ちゅうけい2026-08-28a';
+const CHUKEI_VERSION = 'ちゅうけい2026-09-05';
 
 // The live Microsoft Forms feedback link, included in every response per
 // GitHub issue #1 (2026-08-24) -- during the pilot, learning takes priority
@@ -214,7 +214,7 @@ ${starsOptgeoList}
 
 - **ラスタ背景地図で用が足りる場合**: spiccatoの既定背景(bvmapグレースケール + Mapterhorn)のままでよい。stars-optgeoを追加する必要は無い。
 - **全国空中写真が必要な場合**: \`japan-seamless-aerial-z18\`(z18のみ)または\`seamlessphoto512\`(z1-17)を通常のsource_idとして使う。
-- **利用者が「北海道の火山土地条件図/火山基本図を見たい」など、完成した主題図そのものを求めている場合**: 公開済みstyle_id \`vlcm\`・\`vbm\` を、上記「やりとりの形」節の\`rstyle\`(必須)/\`ostyle\`(任意)パラメータで参照する(道南〜道央限定)。**このstars-optgeoカタログには他にも複数のstyle_idが存在するが、それらは無関係な別プロジェクト向け(共有インフラのため)か、上記「やりとりの形」節で説明した\`basemap\`専用(\`positron\`)なので、火山の文脈でこの2つ以外を使わないこと。**GSI公式凡例に基づき色分け・記号化済みの完成品であり、通常は同名の生タイル(\`req\`/\`opt\`)よりこちらを優先する。例:
+- **利用者が「北海道の火山土地条件図/火山基本図を見たい」など、完成した主題図そのものを求めている場合**: 公開済みstyle_id \`vlcm\`・\`vbm\` を、上記「やりとりの形」節の\`rstyle\`(必須)/\`ostyle\`(任意)パラメータで参照する(北海道内の主要活火山を広くカバー — 十勝岳・雌阿寒岳を含む)。**このstars-optgeoカタログには他にも複数のstyle_idが存在するが、それらは無関係な別プロジェクト向け(共有インフラのため)か、上記「やりとりの形」節で説明した\`basemap\`専用(\`positron\`)なので、火山の文脈でこの2つ以外を使わないこと。**GSI公式凡例に基づき色分け・記号化済みの完成品であり、通常は同名の生タイル(\`req\`/\`opt\`)よりこちらを優先する。例:
 
 \`\`\`
 https://dwg7.github.io/spiccato/#q=catalog=${STARS_OPTGEO_CATALOG_URL}&type=martin&rstyle=vlcm|火山土地条件図&ostyle=vbm|火山基本図&bbox=<west,south,east,north>&name=<地名>
@@ -222,7 +222,7 @@ https://dwg7.github.io/spiccato/#q=catalog=${STARS_OPTGEO_CATALOG_URL}&type=mart
 
 \`bbox\`を省略すると全国表示(ズーム5相当)になってしまうため、スタイル参照でも必ず埋めること。
 - **同名の罠**: \`vbm\`・\`vlcm\`という名前は、このカタログの生タイル(\`source_id\`、上記リストの通り)と、公開済みスタイル(\`style_id\`)の両方に存在する — 完全に別物(生タイルは無色のデータ、スタイルはGSI公式凡例で着色済みの完成品)。「主題図そのものが欲しい」という依頼には\`req\`/\`opt\`ではなく必ず\`rstyle\`/\`ostyle\`を使うこと。取り違えると、色分けの無い生データが返って利用者の期待を裏切る。
-- **カタログ1の個別火山データより常にこちらを優先する**: 「有珠山の火山土地条件図」のように特定の火山名を挙げられた場合でも、対象が道南〜道央の範囲内であれば、カタログ1(layers-martin)の\`vlcd_<火山名>\`系列(個別火山ごとの生データ、例: \`vlcd_usu\`有珠山、\`vlcd_tarumae\`樽前山、\`vlcd_hokoma\`北海道駒ヶ岳)ではなく、必ずこのstyle_id(\`rstyle=vlcm\`/\`ostyle=vbm\`)を使う。GSI公式凡例で色分け済みの完成品としての優先順位は、個別火山かどうかに関わらず変わらない。\`bbox\`は聞かれた火山周辺に絞ってよい(スタイル自体は道南〜道央全域を対象とするが、表示範囲を個別火山にズームするのは問題ない)。対象の火山が道南〜道央の範囲外(例: 十勝岳・雌阿寒岳など道東・道北寄り)の場合に限り、カタログ1の\`vlcd_<火山名>\`にフォールバックする。
+- **カタログ1の個別火山データより常にこちらを優先する**: 「有珠山の火山土地条件図」「十勝岳の火山土地条件図」のように特定の火山名を挙げられた場合でも、カタログ1(layers-martin)の\`vlcd_<火山名>\`系列(個別火山ごとの生データ、例: \`vlcd_usu\`有珠山、\`vlcd_tarumae\`樽前山、\`vlcd_hokoma\`北海道駒ヶ岳、\`vlcd_tokachi\`十勝岳、\`vlcd_meakan\`雌阿寒岳)ではなく、必ずこのstyle_id(\`rstyle=vlcm\`/\`ostyle=vbm\`)を使う。GSI公式凡例で色分け済みの完成品としての優先順位は、個別火山かどうかに関わらず変わらない。\`bbox\`は聞かれた火山周辺に絞ってよい(スタイル自体は北海道内の主要活火山を広くカバーするが、表示範囲を個別火山にズームするのは問題ない)。カタログ1の\`vlcd_<火山名>\`は、対象の火山がこのスタイルの収録範囲外である場合に限るフォールバックとする。
 
 ## 地域・範囲の解決はあなたの責務
 
